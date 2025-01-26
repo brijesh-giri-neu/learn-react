@@ -18,7 +18,14 @@ function ListItem({ label, content }: ListItemProps) {
   return (
     <li>
       <b>{label}: </b>
-      {content.includes(",") !== false ? <b>{content.split(",").length}</b> : null} {content}
+      {content.includes(",") ? (
+        <>
+          <b>{content.split(",").length}</b> ({content})
+        </>
+      ) : 
+      (
+        content
+      )}
     </li>
   );
 }
