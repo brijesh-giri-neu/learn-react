@@ -15,9 +15,12 @@ const initialList = [
  */
 export default function BucketList() {
   const [myList, setMyList] = useState(initialList);
-  const [yourList, setYourList] = useState(
-    initialList
-  );
+  // Existing buggy code that uses same list, 
+  // or creates shallow copy using ...initialList
+  const [yourList, setYourList] = useState(initialList); 
+
+  // Naive Soln 1: Create deep copy of entire list pre-emptively
+  // const [yourList, setYourList] = useState(structuredClone(initialList));
 
   /**
    * The function updates the seen property of the artwork with the given id in the mylist.
@@ -27,9 +30,12 @@ export default function BucketList() {
   function handleToggleMyList(artworkId: number, nextSeen: boolean) {
     const tmpList = myList.map(e => {
         if (e.id === artworkId) {
-            e.seen = nextSeen
+          // Optimal Soln 2 : Create new objects only when requried
+          //  and reuse shallow copies for all other properties except the one we want to change
+          return {...e, seen: nextSeen}
+        } else {
+          return e
         }
-        return e
     });
     setMyList(tmpList);
   }
@@ -42,9 +48,10 @@ export default function BucketList() {
   function handleToggleYourList(artworkId: number, nextSeen: boolean) {
     const tmpList = yourList.map(e => {
         if (e.id === artworkId) {
-            e.seen = nextSeen
+          return {...e, seen: nextSeen}
+        } else {
+          return e
         }
-        return e
     });
     setYourList(tmpList);
   }

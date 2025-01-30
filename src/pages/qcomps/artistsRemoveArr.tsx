@@ -25,7 +25,10 @@ export default function List() {
           <li key={artist.id}>
             {artist.name}{' '}
             <button onClick={() => {
-              artists.splice(artist.id, 1)
+              // artists.splice(artist.id, 1) Old buggy code that mutated the array
+              // New approach creates a new array instead of mutating, 
+              // as well as calls setArtists to update state and re-render UI
+              setArtists(artists.filter(a => a.id != artist.id))
             }}>
               Delete
             </button>
